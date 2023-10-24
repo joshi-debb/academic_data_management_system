@@ -1,0 +1,5 @@
+-- Descripcion: Script para el proyecto 2
+
+-- CREAR BASE DE DATOS
+
+CREATE SCHEMA IF NOT EXISTS BD1PY1;

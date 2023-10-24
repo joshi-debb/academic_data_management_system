@@ -1,0 +1,148 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="FE307D3A-38BA-6024-DC29-8B189843E818" name="CURSOHABILITADO">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>0521409A-EE19-519D-019B-AD41EEEA42C0</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="4F02AAEC-8FC7-C7D8-1C4E-3AEBAE569D72">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>F1D82F68-47F3-0856-01AD-E64A520D63A2</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ciclo" id="008E783F-4771-1B50-D7EF-C398765F28B6">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>1B72BDA4-9934-024E-379F-50A50B395D2F</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="cupo" id="52E36E90-1779-2E3D-1117-78B6D60356BD">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>9E2E5D20-35C0-EEEF-4E86-2038A4D38627</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="seccion" id="2087FEC8-E963-A3B9-7282-E95477D4948C">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>3ADD603B-7E37-1F46-0450-BA888D6FD227</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>5</dataTypeSize>
+<ownDataTypeParameters>5,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="anio" id="CB9F0F3A-973D-7991-687D-B90B29541CD9">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>322EEC75-DA09-960B-C65B-2B878CA4D720</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="asignados" id="B20C2F23-A819-765D-3966-CE62AD58DDB5">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>9CB0E620-85EB-CA15-4DB8-7DA54D34993C</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CURSO_codigo" id="BF033406-4500-5304-E9CC-8C481881F8FE">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>7CF345CD-907A-5C8C-6DA5-1D2AB55CBB74</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="7E63DD6A-9060-614B-13B2-A9BAF62681AC" referredColumn="45938F83-886F-2DF1-5B75-42B548EFDD2D"/>
+</associations>
+</Column>
+<Column name="DOCENTE_registro_siif" id="63D14BE0-393B-3B0E-9A13-FB1D701E06D8">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>5D09625F-F44C-753F-6913-1B93FDEA6AEA</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="22B48A4B-4AE7-0BFD-1AB1-9B97FA2AA5C2" referredColumn="0F462D1C-2DF6-D2A1-AC67-648D2D109CBC"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="CAFED017-CDB4-EF15-5880-AA6DB81708A7" name="CURSOHABILITADO_PK">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>80B6303E-2336-038B-357B-3961E6959B13</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4F02AAEC-8FC7-C7D8-1C4E-3AEBAE569D72"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="83211D0E-9019-0861-D03C-01958686ECF2" name="CURSOHABILITADO_CURSO_FK">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>4C59BCFE-2CD9-243E-ED3F-520258338858</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BF033406-4500-5304-E9CC-8C481881F8FE"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="67DAE3A9-21BB-52A5-0E85-074A6D1B26D0" name="CURSOHABILITADO_DOCENTE_FK">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>23824786-369A-3268-A2BA-22FACF33D099</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="63D14BE0-393B-3B0E-9A13-FB1D701E06D8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

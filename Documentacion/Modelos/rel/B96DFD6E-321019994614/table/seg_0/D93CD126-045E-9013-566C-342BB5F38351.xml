@@ -1,0 +1,99 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="D93CD126-045E-9013-566C-342BB5F38351" name="ACTA">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>50EBB1D0-7218-AB1C-327C-86419F1F470C</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="C0400BD3-F2DB-661A-5C02-23A58F7C1B25">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>3970B602-6658-6438-F551-94CBA6B38FC1</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ciclo" id="35673D2A-ADD2-EDD5-A134-E4A2C1E06247">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>C16DE2E9-BDE8-D313-C329-6C2D3C557EF4</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="seccion" id="9652FFEC-C13A-2671-3201-D8E0DF83C404">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>32D1763A-638C-51AE-5A8D-A13B306E6A0A</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>5</dataTypeSize>
+<ownDataTypeParameters>5,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="fecha_hora" id="F3413B8A-6497-286E-CD23-3E7D84292933">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>2A905E24-9180-9ED9-E641-74BE2D57A841</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CURSO_codigo" id="7FDADCE3-43B5-1F8D-238F-119DF8A49028">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>D3887278-B662-95B1-5E03-6A7F0D1191E5</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="B3C808FD-C1F4-4EED-1FD7-C8060DC79D66" referredColumn="45938F83-886F-2DF1-5B75-42B548EFDD2D"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="A8AFEBA4-E39D-250C-75D2-571CA89CC0BB" name="ACTA_PK">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>D47015CF-8CD1-3D23-E52D-5A5FFF660F9C</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C0400BD3-F2DB-661A-5C02-23A58F7C1B25"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1DB7B86D-28F2-324F-D456-D68BCB506F1F" name="ACTA_CURSO_FK">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:16:33 UTC</createdTime>
+<generatorID>DBF47634-C63B-2592-3BFC-75FB29455B77</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="7FDADCE3-43B5-1F8D-238F-119DF8A49028"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

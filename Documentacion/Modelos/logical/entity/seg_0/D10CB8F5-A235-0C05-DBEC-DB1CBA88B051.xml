@@ -14,4 +14,98 @@
 <maxVolumes>9999999</maxVolumes>
 <minVolumes>0</minVolumes>
 <normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="codigo" id="34414B46-9730-35D0-D055-2435611B984B">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:27:32 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nombre" id="03A07DD4-BDA0-F27E-AD65-5C69BEFD045C">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:27:49 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="creditos_necesarios" id="00EB2A71-E681-058D-F98E-F37A172DF2CC">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:28:07 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="creditos_otorga" id="0D1DA917-2E18-2E70-D539-CB10D44D1525">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:28:26 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="obligatorio" id="57EC94B6-E107-B5C5-142F-6EF5D86A971E">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:28:56 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="codigo1" id="B06D9B6F-EF04-F6BC-8B69-5D32691E0C69">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:04:02 UTC</createdTime>
+<generatorID>4632637A-1BAF-2055-3FED-75C1A1821A1D</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<referedAttribute>AC1EB681-4122-B1D4-7BFD-8BE2D9F86438</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="4DFBC875-350F-E185-CC9C-04EA04EAADEB" name="CURSO PK">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:27:47 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>34414B46-9730-35D0-D055-2435611B984B</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
 </Entity>

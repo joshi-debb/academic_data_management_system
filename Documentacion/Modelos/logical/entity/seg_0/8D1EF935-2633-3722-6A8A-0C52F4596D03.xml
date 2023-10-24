@@ -14,4 +14,100 @@
 <maxVolumes>9999999</maxVolumes>
 <minVolumes>0</minVolumes>
 <normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="BBF345D0-9FEE-FF9E-52E7-BD422275F84D">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:53:02 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ciclo" id="23EF023F-04D1-D5A9-1A31-20BAB749E153">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:53:22 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="seccion" id="FE7D9FA2-EE67-A870-A642-E965C64F494A">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:53:47 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>5</dataTypeSize>
+<ownDataTypeParameters>5,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nota" id="4A85F4C6-BD1E-73EF-5D31-D2829B0C7D13">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:54:00 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="codigo" id="723D0044-EDC6-EFB7-8FBA-F8037AF845E0">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:08:23 UTC</createdTime>
+<generatorID>B72263AC-BB01-68CA-A55C-DE2504A057E8</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<referedAttribute>34414B46-9730-35D0-D055-2435611B984B</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="carnet" id="A13D40E2-8ABC-E400-2376-C963676A6C4C">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 07:08:42 UTC</createdTime>
+<generatorID>8232F42E-DE87-003D-C398-289AE22D8CC5</generatorID>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<referedAttribute>DF19039F-AC7D-ACB9-C2E8-803ED39FBC15</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="369F968D-494B-5DDE-BC4F-EB740FED1D2D" name="NOTA PK">
+<createdBy>why96</createdBy>
+<createdTime>2023-10-21 06:53:22 UTC</createdTime>
+<ownerDesignName>Modelos</ownerDesignName>
+<engineerTo>
+<item key="B96DFD6E-4F5A-FF51-96AC-321019994614" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>BBF345D0-9FEE-FF9E-52E7-BD422275F84D</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
 </Entity>
