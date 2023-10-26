@@ -4,6 +4,10 @@
 
 CREATE SCHEMA IF NOT EXISTS BD1PY2;
 
+-- SELECCIONAR BASE DE DATOS
+
+USE BD1PY2;
+
 -- CREAR TABLA CARRERA
 
 CREATE TABLE IF NOT EXISTS BD1PY2.CARRERA (
@@ -174,3 +178,10 @@ CREATE TABLE IF NOT EXISTS BD1PY2.HISTORIAL (
     PRIMARY KEY (id_historial)
 
 );
+
+
+-- Funciones y Procedimientos:
+
+-- procedimiento para insertar carrera
+
+DELIMITER $$
