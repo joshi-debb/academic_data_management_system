@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS BD1PY2.DOCENTE (
 
 CREATE TABLE IF NOT EXISTS BD1PY2.CURSO (
     cod_curso VARCHAR(10) NOT NULL,
-    nombre VARCHAR(30) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
     creditos_nec INT NOT NULL,
     creditos_otg INT NOT NULL,
     obligatorio BOOLEAN NOT NULL,
@@ -73,12 +73,13 @@ CREATE TABLE IF NOT EXISTS BD1PY2.CURSO (
 -- CREAR TABLA CURSO_HABILITADO
 
 CREATE TABLE IF NOT EXISTS BD1PY2.CURSO_HABILITADO (
-    id_ch VARCHAR(10) NOT NULL,
+    id_ch INT NOT NULL AUTO_INCREMENT,
     cupo_max INT NOT NULL,
     seccion VARCHAR(2) NOT NULL,
-    anio DATE NOT NULL,
+    anio VARCHAR(4) NOT NULL,
     cod_curso VARCHAR(10) NOT NULL,
     siif VARCHAR(10) NOT NULL,
+    ciclo VARCHAR(10) NOT NULL,
     
     PRIMARY KEY (id_ch),
     FOREIGN KEY (cod_curso) REFERENCES BD1PY2.CURSO(cod_curso),
@@ -92,8 +93,8 @@ CREATE TABLE IF NOT EXISTS BD1PY2.CURSO_HABILITADO (
 CREATE TABLE IF NOT EXISTS BD1PY2.HORARIO (
     id_horaio INT NOT NULL AUTO_INCREMENT,
     dia VARCHAR(10) NOT NULL,
-    hora TIME NOT NULL,
-    id_ch VARCHAR(10) NOT NULL,
+    hora VARCHAR(20) NOT NULL,
+    id_ch INT NOT NULL,
     
     PRIMARY KEY (id_horaio),
     FOREIGN KEY (id_ch) REFERENCES BD1PY2.CURSO_HABILITADO(id_ch)
@@ -105,7 +106,7 @@ CREATE TABLE IF NOT EXISTS BD1PY2.HORARIO (
 CREATE TABLE IF NOT EXISTS BD1PY2.ASIGNACION (
     id_asignacion INT NOT NULL AUTO_INCREMENT,
     carnet VARCHAR(10) NOT NULL,
-    id_ch VARCHAR(10) NOT NULL,
+    id_ch INT NOT NULL,
 
     PRIMARY KEY (id_asignacion),
     FOREIGN KEY (carnet) REFERENCES BD1PY2.ESTUDIANTE(carnet),
@@ -118,7 +119,7 @@ CREATE TABLE IF NOT EXISTS BD1PY2.ASIGNACION (
 CREATE TABLE IF NOT EXISTS BD1PY2.DESASIGNACION (
     id_desasignacion INT NOT NULL AUTO_INCREMENT,
     carnet VARCHAR(10) NOT NULL,
-    id_ch VARCHAR(10) NOT NULL,
+    id_ch INT NOT NULL,
 
     PRIMARY KEY (id_desasignacion),
     FOREIGN KEY (carnet) REFERENCES BD1PY2.ESTUDIANTE(carnet),
@@ -131,7 +132,7 @@ CREATE TABLE IF NOT EXISTS BD1PY2.DESASIGNACION (
 CREATE TABLE IF NOT EXISTS BD1PY2.ASIGNADOS (
     id_asignados INT NOT NULL AUTO_INCREMENT,
     cantidad INT NOT NULL,
-    id_ch VARCHAR(10) NOT NULL,
+    id_ch INT NOT NULL,
 
     PRIMARY KEY (id_asignados),
     FOREIGN KEY (id_ch) REFERENCES BD1PY2.CURSO_HABILITADO(id_ch)
@@ -146,7 +147,7 @@ CREATE TABLE IF NOT EXISTS BD1PY2.NOTA (
     id_nota INT NOT NULL AUTO_INCREMENT,
     nota INT NOT NULL,
     carnet VARCHAR(10) NOT NULL,
-    id_ch VARCHAR(10) NOT NULL,
+    id_ch INT NOT NULL,
 
     PRIMARY KEY (id_nota),
     FOREIGN KEY (carnet) REFERENCES BD1PY2.ESTUDIANTE(carnet),
@@ -160,7 +161,7 @@ CREATE TABLE IF NOT EXISTS BD1PY2.ACTA (
     id_acta INT NOT NULL AUTO_INCREMENT,
     fecha DATE NOT NULL,
     hora TIME NOT NULL,
-    id_ch VARCHAR(10) NOT NULL,
+    id_ch INT NOT NULL,
 
     PRIMARY KEY (id_acta),
     FOREIGN KEY (id_ch) REFERENCES BD1PY2.CURSO_HABILITADO(id_ch)
@@ -172,12 +173,400 @@ CREATE TABLE IF NOT EXISTS BD1PY2.ACTA (
 CREATE TABLE IF NOT EXISTS BD1PY2.HISTORIAL (
     id_historial INT NOT NULL AUTO_INCREMENT,
     fecha DATE NOT NULL,
-    descripcion VARCHAR(100) NOT NULL,
+    descripcion VARCHAR(200) NOT NULL,
     tipo VARCHAR(20) NOT NULL,
 
     PRIMARY KEY (id_historial)
 
 );
+
+-- Triggers
+
+-- trigger para guardar historial de trasacciones, carrera
+
+DROP TRIGGER IF EXISTS insert_carrera;
+
+DELIMITER $$
+CREATE TRIGGER insert_carrera AFTER INSERT ON BD1PY2.CARRERA
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha creado una carrera.', 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_carrera;
+
+DELIMITER $$
+CREATE TRIGGER update_carrera AFTER UPDATE ON BD1PY2.CARRERA
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha actualizado una carrera.', 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_carrera;
+
+DELIMITER $$
+CREATE TRIGGER delete_carrera AFTER DELETE ON BD1PY2.CARRERA
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha eliminado una carrera.', 'DELETE');
+END$$
+DELIMITER ;
+
+-- trigger para guardar historial de trasacciones, estudiante
+
+DROP TRIGGER IF EXISTS insert_estudiante;
+
+DELIMITER $$
+CREATE TRIGGER insert_estudiante AFTER INSERT ON BD1PY2.ESTUDIANTE
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha creado un estudiante.', 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_estudiante;
+
+DELIMITER $$
+CREATE TRIGGER update_estudiante AFTER UPDATE ON BD1PY2.ESTUDIANTE
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha actualizado un estudiante.', 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_estudiante;
+
+DELIMITER $$
+CREATE TRIGGER delete_estudiante AFTER DELETE ON BD1PY2.ESTUDIANTE
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha eliminado un estudiante.', 'DELETE');
+END$$
+DELIMITER ;
+
+-- trigger para guardar historial de trasacciones, docente
+
+DROP TRIGGER IF EXISTS insert_docente;
+
+DELIMITER $$
+CREATE TRIGGER insert_docente AFTER INSERT ON BD1PY2.DOCENTE
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha creado un docente.', 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_docente;
+
+DELIMITER $$
+CREATE TRIGGER update_docente AFTER UPDATE ON BD1PY2.DOCENTE
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha actualizado un docente.', 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_docente;
+
+DELIMITER $$
+CREATE TRIGGER delete_docente AFTER DELETE ON BD1PY2.DOCENTE
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha eliminado un docente.', 'DELETE');
+END$$
+DELIMITER ;
+
+-- trigger para guardar historial de trasacciones, curso
+
+DROP TRIGGER IF EXISTS insert_curso;
+
+DELIMITER $$
+CREATE TRIGGER insert_curso AFTER INSERT ON BD1PY2.CURSO
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha creado un curso.', 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_curso;
+
+DELIMITER $$
+CREATE TRIGGER update_curso AFTER UPDATE ON BD1PY2.CURSO
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha actualizado un curso.', 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_curso;
+
+DELIMITER $$
+CREATE TRIGGER delete_curso AFTER DELETE ON BD1PY2.CURSO
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se ha eliminado un curso.', 'DELETE');
+END$$
+DELIMITER ;
+
+-- trigger para guardar historial de trasacciones, curso_habilitado
+
+DROP TRIGGER IF EXISTS insert_curso_habilitado;
+
+DELIMITER $$
+CREATE TRIGGER insert_curso_habilitado AFTER INSERT ON BD1PY2.CURSO_HABILITADO
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, CONCAT('Se ha creado un curso habilitado con id: ', NEW.id_ch), 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_curso_habilitado;
+
+DELIMITER $$
+CREATE TRIGGER update_curso_habilitado AFTER UPDATE ON BD1PY2.CURSO_HABILITADO
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, CONCAT('Se ha actualizado un curso habilitado con id: ', NEW.id_ch), 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_curso_habilitado;
+
+DELIMITER $$
+CREATE TRIGGER delete_curso_habilitado AFTER DELETE ON BD1PY2.CURSO_HABILITADO
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, CONCAT('Se ha eliminado un curso habilitado con id: ', OLD.id_ch), 'DELETE');
+END$$
+DELIMITER ;
+
+-- trigger para guardar historial de trasacciones, horario
+
+DROP TRIGGER IF EXISTS insert_horario;
+
+DELIMITER $$
+CREATE TRIGGER insert_horario AFTER INSERT ON BD1PY2.HORARIO
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, CONCAT('Se ha creado un horario con id: ', NEW.id_horaio), 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_horario;
+
+DELIMITER $$
+CREATE TRIGGER update_horario AFTER UPDATE ON BD1PY2.HORARIO
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, CONCAT('Se ha actualizado un horario con id: ', NEW.id_horaio), 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_horario;
+
+DELIMITER $$
+CREATE TRIGGER delete_horario AFTER DELETE ON BD1PY2.HORARIO
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, CONCAT('Se ha eliminado un horario con id: ', OLD.id_horaio), 'DELETE');
+END$$
+DELIMITER ;
+
+-- trigger para guardar historial de trasacciones, asignacion
+
+DROP TRIGGER IF EXISTS insert_asignacion;
+
+DELIMITER $$
+CREATE TRIGGER insert_asignacion AFTER INSERT ON BD1PY2.ASIGNACION
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, CONCAT('Se ha asignado un estudiante.'), 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_asignacion;
+
+DELIMITER $$
+CREATE TRIGGER update_asignacion AFTER UPDATE ON BD1PY2.ASIGNACION
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, CONCAT('Se actualizo la asignacion de un estudiante.'), 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_asignacion;
+
+DELIMITER $$
+CREATE TRIGGER delete_asignacion AFTER DELETE ON BD1PY2.ASIGNACION
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, CONCAT('Se desasigno un estudiante.'), 'DELETE');
+END$$
+DELIMITER ;
+
+-- trigger para guardar historial de trasacciones, desasignacion
+
+DROP TRIGGER IF EXISTS insert_desasignacion;
+
+DELIMITER $$
+CREATE TRIGGER insert_desasignacion AFTER INSERT ON BD1PY2.DESASIGNACION
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, CONCAT('Se desasigno un estudiante.'), 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_desasignacion;
+
+DELIMITER $$
+CREATE TRIGGER update_desasignacion AFTER UPDATE ON BD1PY2.DESASIGNACION
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha, 'Se actualizo la desasignacion de un estudiante.', 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_desasignacion;
+
+DELIMITER $$
+CREATE TRIGGER delete_desasignacion AFTER DELETE ON BD1PY2.DESASIGNACION
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha,'Se desasigno un estudiante.', 'DELETE');
+END$$
+DELIMITER ;
+
+-- trigger para guardar historial de trasacciones, asignados
+
+DROP TRIGGER IF EXISTS insert_asignados;
+
+DELIMITER $$
+CREATE TRIGGER insert_asignados AFTER INSERT ON BD1PY2.ASIGNADOS
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha,'Se asignaron cupos a un curso.', 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_asignados;
+
+DELIMITER $$
+CREATE TRIGGER update_asignados AFTER UPDATE ON BD1PY2.ASIGNADOS
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha,'Se actualizo la asignacion de cupos a un curso.', 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_asignados;
+
+DELIMITER $$
+CREATE TRIGGER delete_asignados AFTER DELETE ON BD1PY2.ASIGNADOS
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha,'Se desasignaron cupos a un curso.', 'DELETE');
+END$$
+DELIMITER ;
+
+-- trigger para guardar historial de trasacciones, nota
+
+DROP TRIGGER IF EXISTS insert_nota;
+
+DELIMITER $$
+CREATE TRIGGER insert_nota AFTER INSERT ON BD1PY2.NOTA
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha,'Se ha insertado una nota.', 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_nota;
+
+DELIMITER $$
+CREATE TRIGGER update_nota AFTER UPDATE ON BD1PY2.NOTA
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha,'Se ha actualizado una nota.', 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_nota;
+
+DELIMITER $$
+CREATE TRIGGER delete_nota AFTER DELETE ON BD1PY2.NOTA
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha,'Se ha eliminado una nota.', 'DELETE');
+END$$
+DELIMITER ;
+
+-- trigger para guardar historial de trasacciones, acta
+
+DROP TRIGGER IF EXISTS insert_acta;
+
+DELIMITER $$
+CREATE TRIGGER insert_acta AFTER INSERT ON BD1PY2.ACTA
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha,'Se ha insertado un acta.', 'INSERT');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_acta;
+
+DELIMITER $$
+CREATE TRIGGER update_acta AFTER UPDATE ON BD1PY2.ACTA
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha,'Se ha actualizado un acta.', 'UPDATE');
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS delete_acta;
+
+DELIMITER $$
+CREATE TRIGGER delete_acta AFTER DELETE ON BD1PY2.ACTA
+FOR EACH ROW
+BEGIN
+    SELECT NOW() INTO @fecha;
+    INSERT INTO BD1PY2.HISTORIAL(fecha, descripcion, tipo) VALUES(@fecha,'Se ha eliminado un acta.', 'DELETE');
+END$$
+DELIMITER ;
+
 
 
 -- Funciones y Procedimientos:
@@ -302,51 +691,51 @@ DROP PROCEDURE IF EXISTS registrarDocente;
 
 DELIMITER $$
 CREATE PROCEDURE registrarDocente(
-    IN nombre VARCHAR(30),
-    IN apellido VARCHAR(30),
-    IN fecha_nac VARCHAR(30),
-    IN correo VARCHAR(100),
-    IN telefono VARCHAR(8),
-    IN direccion VARCHAR(100),
-    IN dpi VARCHAR(20),
-    IN siif VARCHAR(10),
+    IN nombres VARCHAR(30),
+    IN apellidos VARCHAR(30),
+    IN fecha_nacs VARCHAR(30),
+    IN correos VARCHAR(100),
+    IN telefonos VARCHAR(8),
+    IN direccions VARCHAR(100),
+    IN dpis VARCHAR(20),
+    IN siifs VARCHAR(10)
 )
 proc_docente: BEGIN
 
     DECLARE fecha DATE;
     SET fecha = CURDATE();
 
-    SET fecha_nac = STR_TO_DATE(fecha_nac, '%d-%m-%Y');
+    SET fecha_nacs = STR_TO_DATE(fecha_nacs, '%d-%m-%Y');
 
-    IF siif IS NULL THEN
+    IF siifs IS NULL THEN
         call msgE('El registro SIIF no puede ser nulo.');
         LEAVE proc_docente;
-    ELSEIF nombre IS NULL THEN
+    ELSEIF nombres IS NULL THEN
         call msgE('El nombre no puede ser nulo.');
         LEAVE proc_docente;
-    ELSEIF apellido IS NULL THEN
+    ELSEIF apellidos IS NULL THEN
         call msgE('El apellido no puede ser nulo.');
         LEAVE proc_docente;
-    ELSEIF fecha_nac IS NULL THEN
+    ELSEIF fecha_nacs IS NULL THEN
         call msgE('La fecha de nacimiento no puede ser nula.');
         LEAVE proc_docente;
-    ELSEIF correo IS NULL THEN
+    ELSEIF correos IS NULL THEN
         call msgE('El correo no puede ser nulo.');
         LEAVE proc_docente;
-    ELSEIF telefono IS NULL THEN
+    ELSEIF telefonos IS NULL THEN
         call msgE('El telefono no puede ser nulo.');
         LEAVE proc_docente;
-    ELSEIF direccion IS NULL THEN
+    ELSEIF direccions IS NULL THEN
         call msgE('La direccion no puede ser nula.');
         LEAVE proc_docente;
-    ELSEIF dpi IS NULL THEN
+    ELSEIF dpis IS NULL THEN
         call msgE('El dpi no puede ser nulo.');
         LEAVE proc_docente;
     END IF;
 
-    IF correo REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' THEN
+    IF correos REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' THEN
 
-        INSERT INTO BD1PY2.DOCENTE(siif, dpi, nombre, apellido, fecha_nac, correo, telefono, direccion, fecha) VALUES(siif, dpi, nombre, apellido, fecha_nac, correo, telefono, direccion, fecha);
+        INSERT INTO BD1PY2.DOCENTE(siif, dpi, nombre, apellido, fecha_nac, correo, telefono, direccion, fecha) VALUES(siifs, dpis, nombres, apellidos, fecha_nacs, correos, telefonos, direccions, fecha);
 
         call msg('Docente registrado exitosamente.');
 
@@ -354,8 +743,306 @@ proc_docente: BEGIN
         call msgE('El correo no es valido.');
     END IF;
 END$$
-
 DELIMITER ;
+
+-- procedimiento para crear curso
+
+DROP PROCEDURE IF EXISTS crearCurso;
+
+DELIMITER $$
+CREATE PROCEDURE crearCurso(
+    IN cod_cursos VARCHAR(10),
+    IN nombres VARCHAR(100),
+    IN creditos_necs INT,
+    IN creditos_otgs INT,
+    IN id_carreras INT,
+    IN obligatorios BOOLEAN
+)
+proc_curso: BEGIN
+
+    IF cod_cursos IS NULL THEN
+        call msgE('El codigo de curso no puede ser nulo.');
+        LEAVE proc_curso;
+    ELSEIF nombres IS NULL THEN
+        call msgE('El nombre no puede ser nulo.');
+        LEAVE proc_curso;
+    ELSEIF creditos_necs IS NULL THEN
+        call msgE('Los creditos necesarios no pueden ser nulos.');
+        LEAVE proc_curso;
+    ELSEIF creditos_otgs IS NULL THEN
+        call msgE('Los creditos otorgados no pueden ser nulos.');
+        LEAVE proc_curso;
+    ELSEIF id_carreras IS NULL THEN
+        call msgE('El id de carrera no puede ser nulo.');
+        LEAVE proc_curso;
+    ELSEIF creditos_necs < 0 THEN
+        call msgE('Los creditos necesarios deben ser un entero positivo.');
+        LEAVE proc_curso;
+    ELSEIF creditos_otgs < 0 THEN
+        call msgE('Los creditos otorgados deben ser un entero positivo.');
+        LEAVE proc_curso;
+    END IF;
+
+    INSERT INTO BD1PY2.CURSO(cod_curso, nombre, creditos_nec, creditos_otg, id_carrera, obligatorio) VALUES(cod_cursos, nombres, creditos_necs, creditos_otgs, id_carreras, obligatorios);
+
+    call msg('Curso creado exitosamente.');
+
+END$$
+DELIMITER ;
+
+-- procedimiento para crear curso habilitado
+
+DROP PROCEDURE IF EXISTS habilitarCurso;
+
+DELIMITER $$
+CREATE PROCEDURE habilitarCurso(
+    IN cod_cursos VARCHAR(10),
+    IN ciclos VARCHAR(10),
+    IN siifs VARCHAR(10),
+    IN cupo_maxs INT,
+    IN seccions VARCHAR(2)
+)
+proc_habilitarCurso: BEGIN
+
+    DECLARE anios INT;
+    SET anios = YEAR(CURDATE());
+
+    IF cod_cursos IS NULL THEN
+        CALL msgE('El código de curso no puede ser nulo.');
+        LEAVE proc_habilitarCurso;
+    ELSEIF ciclos IS NULL THEN
+        CALL msgE('El ciclo no puede ser nulo.');
+        LEAVE proc_habilitarCurso;
+    ELSEIF siifs IS NULL THEN
+        CALL msgE('El registro SIIF no puede ser nulo.');
+        LEAVE proc_habilitarCurso;
+    ELSEIF cupo_maxs IS NULL THEN
+        CALL msgE('El cupo máximo no puede ser nulo.');
+        LEAVE proc_habilitarCurso; 
+    ELSEIF seccions IS NULL THEN
+        CALL msgE('La sección no puede ser nula.');
+        LEAVE proc_habilitarCurso;
+    ELSEIF cupo_maxs < 0 THEN
+        CALL msgE('El cupo máximo debe ser un entero positivo.');
+        LEAVE proc_habilitarCurso;
+    END IF;
+
+    -- Verifica si el SIIF existe
+    IF NOT EXISTS (SELECT * FROM BD1PY2.DOCENTE WHERE siif = siifs) THEN
+        CALL msgE('El registro SIIF no existe.');
+        LEAVE proc_habilitarCurso;
+    END IF;
+
+    -- Verifica si el código de curso existe
+    IF NOT EXISTS (SELECT * FROM BD1PY2.CURSO WHERE cod_curso = cod_cursos) THEN
+        CALL msgE('El código de curso no existe.');
+        LEAVE proc_habilitarCurso;
+    END IF;
+
+    -- Verifica si ya existe un curso habilitado con el mismo código de curso
+    IF EXISTS (SELECT * FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos) THEN
+        CALL msgE('Ya existe un curso habilitado con el mismo código de curso.');
+        LEAVE proc_habilitarCurso;
+    END IF;
+
+    -- Verifica si ya existe un curso habilitado con el mismo código de curso, ciclo y sección en el año actual
+    IF EXISTS (SELECT * FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND YEAR(anio) = YEAR(CURDATE())) THEN
+        CALL msgE('Ya existe un curso habilitado con el mismo código de curso, ciclo y sección en el año actual.');
+        LEAVE proc_habilitarCurso;
+    END IF;
+
+    -- Si no hay conflictos, habilita el curso
+    INSERT INTO BD1PY2.CURSO_HABILITADO(cod_curso, ciclo, siif, cupo_max, seccion, anio) VALUES(cod_cursos, ciclos, siifs, cupo_maxs, seccions, anios);
+    INSERT INTO BD1PY2.ASIGNADOS(cantidad, id_ch) VALUES(0, LAST_INSERT_ID());
+            
+    CALL msg('Curso habilitado exitosamente.');
+
+END$$
+DELIMITER ;
+
+-- procedimiento para crear horario
+
+DROP PROCEDURE IF EXISTS agregarHorario;
+
+DELIMITER $$
+CREATE PROCEDURE agregarHorario(
+    IN id_chs INT,
+    IN dias INT,
+    IN horas VARCHAR(20)
+)
+proc_agregarHorario: BEGIN
+
+    IF id_chs IS NULL THEN
+        CALL msgE('El id de curso habilitado no puede ser nulo.');
+        LEAVE proc_agregarHorario;
+    ELSEIF dias IS NULL THEN
+        CALL msgE('El dia no puede ser nulo.');
+        LEAVE proc_agregarHorario;
+    ELSEIF horas IS NULL THEN
+        CALL msgE('El horario no puede ser nulo.');
+        LEAVE proc_agregarHorario;
+    END IF;
+
+    -- Verifica si el id de curso habilitado existe
+    IF NOT EXISTS (SELECT * FROM BD1PY2.CURSO_HABILITADO WHERE id_ch = id_chs) THEN
+        CALL msgE('El id de curso habilitado no existe.');
+        LEAVE proc_agregarHorario;
+    END IF;
+
+    -- Verifica si el dia es valido
+    IF dias < 1 OR dias > 7 THEN
+        CALL msgE('El dia debe ser un entero entre 1 y 7.');
+        LEAVE proc_agregarHorario;
+    END IF;
+
+    -- Verifica si el horario es valido
+    IF NOT (horas REGEXP '^[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}$') THEN
+        CALL msgE('El horario debe tener el formato HH:MM-HH:MM.');
+        LEAVE proc_agregarHorario;
+    END IF;
+
+    -- Si no hay conflictos, agrega el horario
+    INSERT INTO BD1PY2.HORARIO(dia, hora, id_ch) VALUES(dias, horas, id_chs);
+            
+    CALL msg('Horario agregado exitosamente.');
+
+END$$
+DELIMITER ;
+
+-- procedimiento para asignar curso
+
+DROP PROCEDURE IF EXISTS asignarCurso;
+
+DELIMITER $$
+CREATE PROCEDURE asignarCurso(
+    IN cod_cursos VARCHAR(10),
+    IN ciclos VARCHAR(10),
+    IN seccions VARCHAR(2),
+    IN carnets VARCHAR(10)
+)
+proc_asignarCurso: BEGIN
+    
+    IF cod_cursos IS NULL THEN
+        CALL msgE('El código de curso no puede ser nulo.');
+        LEAVE proc_asignarCurso;
+    ELSEIF ciclos IS NULL THEN
+        CALL msgE('El ciclo no puede ser nulo.');
+        LEAVE proc_asignarCurso;
+    ELSEIF seccions IS NULL THEN
+        CALL msgE('La sección no puede ser nula.');
+        LEAVE proc_asignarCurso;
+    ELSEIF carnets IS NULL THEN
+        CALL msgE('El carnet no puede ser nulo.');
+        LEAVE proc_asignarCurso;
+    END IF;
+
+    -- Verifica si el código de curso existe a travez del id de curso habilitado
+    IF NOT EXISTS (SELECT * FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos) THEN
+        CALL msgE('El curso no se encuentra habilitado.');
+        LEAVE proc_asignarCurso;
+    END IF;
+
+    -- Verifica si el carnet existe
+    IF NOT EXISTS (SELECT * FROM BD1PY2.ESTUDIANTE WHERE carnet = carnets) THEN
+        CALL msgE('El carnet no existe.');
+        LEAVE proc_asignarCurso;
+    END IF;
+
+    -- verifica si el estudiante cumple con los creditos necesarios
+    IF (SELECT creditos FROM BD1PY2.ESTUDIANTE WHERE carnet = carnets) < (SELECT creditos_nec FROM BD1PY2.CURSO WHERE cod_curso = cod_cursos) THEN
+        CALL msgE('El estudiante no cumple con los creditos necesarios.');
+        LEAVE proc_asignarCurso;
+    END IF;
+
+    IF EXISTS (SELECT * FROM BD1PY2.ASIGNACION WHERE carnet = carnets AND id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE()))) THEN
+        CALL msgE('El estudiante ya esta asignado al curso.');
+        LEAVE proc_asignarCurso;
+    END IF;
+
+    -- verifica si el estudiante pertenece a la carrera del curso excepto si es area comun
+    IF (SELECT id_carrera FROM BD1PY2.ESTUDIANTE WHERE carnet = carnets) != (SELECT id_carrera FROM BD1PY2.CURSO WHERE cod_curso = cod_cursos) AND (SELECT id_carrera FROM BD1PY2.CURSO WHERE cod_curso = cod_cursos) != 0 THEN
+        CALL msgE('El estudiante no pertenece a la carrera del curso.');
+        LEAVE proc_asignarCurso;
+    END IF;
+    
+    
+    -- Verifica si el curso tiene cupos disponibles
+    IF (SELECT cantidad FROM BD1PY2.ASIGNADOS WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE()))) >= (SELECT cupo_max FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE())) THEN
+        CALL msgE('El curso no tiene cupos disponibles.');
+        LEAVE proc_asignarCurso;
+    END IF;
+
+    -- verifica si la seccion existe
+    IF NOT EXISTS (SELECT * FROM BD1PY2.HORARIO WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE()))) THEN
+        CALL msgE('La seccion no existe.');
+        LEAVE proc_asignarCurso;
+    END IF;
+
+    -- Si no hay conflictos, asigna el curso
+    INSERT INTO BD1PY2.ASIGNACION(carnet, id_ch) VALUES(carnets, (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE())));
+    UPDATE BD1PY2.ASIGNADOS SET cantidad = cantidad + 1 WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE()));
+
+    CALL msg('Curso asignado exitosamente.');
+
+
+END$$
+DELIMITER ;
+
+-- procedimiento para desasignar curso
+
+DROP PROCEDURE IF EXISTS desasignarCurso;
+
+DELIMITER $$
+CREATE PROCEDURE desasignarCurso(
+    IN cod_cursos VARCHAR(10),
+    IN ciclos VARCHAR(10),
+    IN seccions VARCHAR(2),
+    IN carnets VARCHAR(10)
+)
+proc_desasignarCurso: BEGIN
+    
+    IF cod_cursos IS NULL THEN
+        CALL msgE('El código de curso no puede ser nulo.');
+        LEAVE proc_desasignarCurso;
+    ELSEIF ciclos IS NULL THEN
+        CALL msgE('El ciclo no puede ser nulo.');
+        LEAVE proc_desasignarCurso;
+    ELSEIF seccions IS NULL THEN
+        CALL msgE('La sección no puede ser nula.');
+        LEAVE proc_desasignarCurso;
+    ELSEIF carnets IS NULL THEN
+        CALL msgE('El carnet no puede ser nulo.');
+        LEAVE proc_desasignarCurso;
+    END IF;
+
+    -- Verifica si el carnet existe
+    IF NOT EXISTS (SELECT * FROM BD1PY2.ESTUDIANTE WHERE carnet = carnets) THEN
+        CALL msgE('El carnet no existe.');
+        LEAVE proc_desasignarCurso;
+    END IF;
+
+    -- Verifica si el estudiante esta asignado al curso
+    IF NOT EXISTS (SELECT * FROM BD1PY2.ASIGNACION WHERE carnet = carnets AND id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE()))) THEN
+        CALL msgE('El estudiante no esta asignado al curso.');
+        LEAVE proc_desasignarCurso;
+    END IF;
+
+    -- verifica si el estudiante pertenece a la carrera del curso excepto si es area comun
+    IF (SELECT id_carrera FROM BD1PY2.ESTUDIANTE WHERE carnet = carnets) != (SELECT id_carrera FROM BD1PY2.CURSO WHERE cod_curso = cod_cursos) AND (SELECT id_carrera FROM BD1PY2.CURSO WHERE cod_curso = cod_cursos) != 0 THEN
+        CALL msgE('El estudiante no pertenece a la carrera del curso.');
+        LEAVE proc_desasignarCurso;
+    END IF;
+
+    -- Si no hay conflictos, desasigna el curso
+    DELETE FROM BD1PY2.ASIGNACION WHERE carnet = carnets AND id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE()));
+    UPDATE BD1PY2.ASIGNADOS SET cantidad = cantidad - 1 WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE()));
+    INSERT INTO BD1PY2.DESASIGNACION(carnet, id_ch) VALUES(carnets, (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE())));
+
+    CALL msg('Curso desasignado exitosamente.');
+
+END$$
+DELIMITER ;
+
 
 -- REGISTRO DE CARRERAS
 CALL crearCarrera('Ingenieria Civil');       -- 1  VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
@@ -384,6 +1071,10 @@ CALL registrarDocente('Docente5','Apellido5','20-09-1982','docente5@ingenieria.u
 CALL registrarEstudiante(202000001,'Estudiante de','Sistemas Uno','30-10-1999','sistemasuno@gmail.com',12345678,'direccion estudiantes sistemas 1',337859510101,3);
 CALL registrarEstudiante(202000002,'Estudiante de','Sistemas Dos','3-5-2000','sistemasdos@gmail.com',12345678,'direccion estudiantes sistemas 2',32781580101,3);
 CALL registrarEstudiante(202000003,'Estudiante de','Sistemas Tres','3-5-2002','sistemastres@gmail.com',12345678,'direccion estudiantes sistemas 3',32791580101,3);
+CALL registrarEstudiante(202000004,'Estudiante de','Sistemas cuatro','3-11-2002','sistemasdes@gmail.com',12345678,'direccion estudiantes sistemas 3',32791580901,3);
+CALL registrarEstudiante(202000005,'Estudiante de','Sistemas asdf','3-11-2002','sistemasdes@gmail.com',12345678,'direccion estudiantes sistemas 3',32791580900,3);
+CALL registrarEstudiante(202000006,'Estudiante de','Sistemas asdf','3-11-2002','sistemasdes@gmail.com',12345678,'direccion estudiantes sistemas 3',32791580900,3);
+
 -- CIVIL
 CALL registrarEstudiante(202100001,'Estudiante de','Civil Uno','3-5-1990','civiluno@gmail.com',12345678,'direccion de estudiante civil 1',3182781580101,1);
 CALL registrarEstudiante(202100002,'Estudiante de','Civil Dos','03-08-1998','civildos@gmail.com',12345678,'direccion de estudiante civil 2',3181781580101,1);
@@ -433,3 +1124,41 @@ CALL crearCurso(422,'Curso Electronica 2',4,4,4,true);
 CALL crearCurso(423,'Curso Electronica 3',8,4,4,false);
 CALL crearCurso(424,'Curso Electronica 4',12,4,4,true);
 CALL crearCurso(425,'Curso Electronica 5',16,4,4,true);
+
+-- HABILITAR CURSO
+
+-- -- AREA COMUN
+CALL habilitarCurso(0006,'1S','1',30,'A');
+
+-- INGENIERIA EN SISTEMAS
+CALL habilitarCurso(777,'1S','1',30,'B');
+
+CALL habilitarCurso(424,'2S','8',102,'C');
+
+CALL habilitarCurso(321,'2S','3',10,'F');
+
+
+CALL agregarHorario(1,2,'08:00-10:00');
+
+CALL agregarHorario(3,3,'08:00-10:00');
+
+CALL agregarHorario(2,9,'08:00-10:00');
+
+CALL agregarHorario(9,2,'08:00-10:00');
+
+CALL agregarHorario(5,3,'08:00-10:00');
+
+CALL agregarHorario(1,3,'08:00-10:00');
+
+
+
+CALL habilitarCurso(770,'1S','1',1,'D');
+
+
+CALL asignarCurso(0006,'1S','A',202000001);
+
+CALL desasignarCurso(0006,'1S','A',202000001);
+
+
+
+
