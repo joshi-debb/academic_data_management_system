@@ -139,8 +139,6 @@ CREATE TABLE IF NOT EXISTS BD1PY2.ASIGNADOS (
 
 );
 
-
-
 -- CREAR TABLA NOTA
 
 CREATE TABLE IF NOT EXISTS BD1PY2.NOTA (
@@ -1044,121 +1042,373 @@ END$$
 DELIMITER ;
 
 
--- REGISTRO DE CARRERAS
-CALL crearCarrera('Ingenieria Civil');       -- 1  VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
-CALL crearCarrera('Ingenieria Industrial');  -- 2  VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
-CALL crearCarrera('Ingenieria Sistemas');    -- 3  VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
-CALL crearCarrera('Ingenieria Electronica'); -- 4  VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
-CALL crearCarrera('Ingenieria Mecanica');    -- 5  VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
-CALL crearCarrera('Ingenieria Mecatronica'); -- 6  VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
-CALL crearCarrera('Ingenieria Quimica');     -- 7  VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
-CALL crearCarrera('Ingenieria Ambiental');   -- 8  VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
-CALL crearCarrera('Ingenieria Materiales');  -- 9  VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
-CALL crearCarrera('Ingenieria Textil');      -- 10 VALIDAR QUE LES QUEDE ESTE ID EN LA CARRERA CORRESPONDIENTE
+-- procedimiento para ingresar notas
 
-INSERT INTO carrera (id_carrera,nombre) VALUES (0,'Area Comun');
-UPDATE carrera SET id_carrera = 0 WHERE id_carrera = LAST_INSERT_ID();
+DROP PROCEDURE IF EXISTS ingresarNota;
 
--- REGISTRO DE DOCENTES
-CALL registrarDocente('Docente1','Apellido1','30-10-1999','aadf@ingenieria.usac.edu.gt',12345678,'direccion',12345678910,1);
-CALL registrarDocente('Docente2','Apellido2','20-11-1999','docente2@ingenieria.usac.edu.gt',12345678,'direcciondocente2',12345678911,2);
-CALL registrarDocente('Docente3','Apellido3','20-12-1980','docente3@ingenieria.usac.edu.gt',12345678,'direcciondocente3',12345678912,3);
-CALL registrarDocente('Docente4','Apellido4','20-11-1981','docente4@ingenieria.usac.edu.gt',12345678,'direcciondocente4',12345678913,4);
-CALL registrarDocente('Docente5','Apellido5','20-09-1982','docente5@ingenieria.usac.edu.gt',12345678,'direcciondocente5',12345678914,5);
+DELIMITER $$
+CREATE PROCEDURE ingresarNota(
+    IN cod_cursos VARCHAR(10),
+    IN ciclos VARCHAR(10),
+    IN seccions VARCHAR(2),
+    IN carnets VARCHAR(10),
+    IN notas INT
+)
+proc_ingresarNota: BEGIN
+    
+    IF cod_cursos IS NULL THEN
+        CALL msgE('El código de curso no puede ser nulo.');
+        LEAVE proc_ingresarNota;
+    ELSEIF ciclos IS NULL THEN
+        CALL msgE('El ciclo no puede ser nulo.');
+        LEAVE proc_ingresarNota;
+    ELSEIF seccions IS NULL THEN
+        CALL msgE('La sección no puede ser nula.');
+        LEAVE proc_ingresarNota;
+    ELSEIF carnets IS NULL THEN
+        CALL msgE('El carnet no puede ser nulo.');
+        LEAVE proc_ingresarNota;
+    ELSEIF notas IS NULL THEN
+        CALL msgE('La nota no puede ser nula.');
+        LEAVE proc_ingresarNota;
+    ELSEIF notas < 0 THEN
+        CALL msgE('La nota debe ser un entero positivo.');
+        LEAVE proc_ingresarNota;
+    END IF;
 
--- REGISTRO DE ESTUDIANTES
--- SISTEMAS
-CALL registrarEstudiante(202000001,'Estudiante de','Sistemas Uno','30-10-1999','sistemasuno@gmail.com',12345678,'direccion estudiantes sistemas 1',337859510101,3);
-CALL registrarEstudiante(202000002,'Estudiante de','Sistemas Dos','3-5-2000','sistemasdos@gmail.com',12345678,'direccion estudiantes sistemas 2',32781580101,3);
-CALL registrarEstudiante(202000003,'Estudiante de','Sistemas Tres','3-5-2002','sistemastres@gmail.com',12345678,'direccion estudiantes sistemas 3',32791580101,3);
-CALL registrarEstudiante(202000004,'Estudiante de','Sistemas cuatro','3-11-2002','sistemasdes@gmail.com',12345678,'direccion estudiantes sistemas 3',32791580901,3);
-CALL registrarEstudiante(202000005,'Estudiante de','Sistemas asdf','3-11-2002','sistemasdes@gmail.com',12345678,'direccion estudiantes sistemas 3',32791580900,3);
-CALL registrarEstudiante(202000006,'Estudiante de','Sistemas asdf','3-11-2002','sistemasdes@gmail.com',12345678,'direccion estudiantes sistemas 3',32791580900,3);
+    -- Verifica si el carnet existe
+    IF NOT EXISTS (SELECT * FROM BD1PY2.ESTUDIANTE WHERE carnet = carnets) THEN
+        CALL msgE('El carnet no existe.');
+        LEAVE proc_ingresarNota;
+    END IF;
 
--- CIVIL
-CALL registrarEstudiante(202100001,'Estudiante de','Civil Uno','3-5-1990','civiluno@gmail.com',12345678,'direccion de estudiante civil 1',3182781580101,1);
-CALL registrarEstudiante(202100002,'Estudiante de','Civil Dos','03-08-1998','civildos@gmail.com',12345678,'direccion de estudiante civil 2',3181781580101,1);
--- INDUSTRIAL
-CALL registrarEstudiante(202200001,'Estudiante de','Industrial Uno','30-10-1999','industrialuno@gmail.com',12345678,'direccion de estudiante industrial 1',3878168901,2);
-CALL registrarEstudiante(202200002,'Estudiante de','Industrial Dos','20-10-1994','industrialdos@gmail.com',89765432,'direccion de estudiante industrial 2',29781580101,2);
--- ELECTRONICA
-CALL registrarEstudiante(202300001, 'Estudiante de','Electronica Uno','20-10-2005','electronicauno@gmail.com',89765432,'direccion de estudiante electronica 1',29761580101,4);
-CALL registrarEstudiante(202300002, 'Estudiante de','Electronica Dos', '01-01-2008','electronicados@gmail.com',12345678,'direccion de estudiante electronica 2',387916890101,4);
--- ESTUDIANTES RANDOM
-CALL registrarEstudiante(201710160, 'ESTUDIANTE','SISTEMAS RANDOM','20-08-1994','estudiasist@gmail.com',89765432,'direccionestudisist random',29791580101,3);
-CALL registrarEstudiante(201710161, 'ESTUDIANTE','CIVIL RANDOM','20-08-1995','estudiacivl@gmail.com',89765432,'direccionestudicivl random',30791580101,1);
+    -- Verifica si el estudiante esta asignado al curso
+    IF NOT EXISTS (SELECT * FROM BD1PY2.ASIGNACION WHERE carnet = carnets AND id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE()))) THEN
+        CALL msgE('El estudiante no esta asignado al curso.');
+        LEAVE proc_ingresarNota;
+    END IF;
 
--- AGREGAR CURSO
+    -- verifica si el estudiante pertenece a la carrera del curso excepto si es area comun
+    IF (SELECT id_carrera FROM BD1PY2.ESTUDIANTE WHERE carnet = carnets) != (SELECT id_carrera FROM BD1PY2.CURSO WHERE cod_curso = cod_cursos) AND (SELECT id_carrera FROM BD1PY2.CURSO WHERE cod_curso = cod_cursos) != 0 THEN
+        CALL msgE('El estudiante no pertenece a la carrera del curso.');
+        LEAVE proc_ingresarNota;
+    END IF;
 
--- AREA COMUN
-CALL crearCurso(0006,'Idioma Tecnico 1',0,7,0,false); 
-CALL crearCurso(0007,'Idioma Tecnico 2',0,7,0,false);
-CALL crearCurso(101,'MB 1',0,7,0,true); 
-CALL crearCurso(103,'MB 2',0,7,0,true); 
-CALL crearCurso(017,'SOCIAL HUMANISTICA 1',0,4,0,true); 
-CALL crearCurso(019,'SOCIAL HUMANISTICA 2',0,4,0,true); 
-CALL crearCurso(348,'QUIMICA GENERAL',0,3,0,true); 
-CALL crearCurso(349,'QUIMICA GENERAL LABORATORIO',0,1,0,true);
--- INGENIERIA EN SISTEMAS
-CALL crearCurso(777,'Compiladores 1',80,4,3,true); 
-CALL crearCurso(770,'INTR. A la Programacion y computacion 1',0,4,3,true); 
-CALL crearCurso(960,'MATE COMPUTO 1',33,5,3,true); 
-CALL crearCurso(795,'lOGICA DE SISTEMAS',33,2,3,true);
-CALL crearCurso(796,'LENGUAJES FORMALES Y DE PROGRAMACIÓN',0,3,3,TRUE);
--- INGENIERIA INDUSTRIAL
-CALL crearCurso(123,'Curso Industrial 1',0,4,2,true); 
-CALL crearCurso(124,'Curso Industrial 2',0,4,2,true);
-CALL crearCurso(125,'Curso Industrial enseñar a pensar',10,2,2,false);
-CALL crearCurso(126,'Curso Industrial ENSEÑAR A DIBUJAR',2,4,2,true);
-CALL crearCurso(127,'Curso Industrial 3',8,4,2,true);
--- INGENIERIA CIVIL
-CALL crearCurso(321,'Curso Civil 1',0,4,1,true);
-CALL crearCurso(322,'Curso Civil 2',4,4,1,true);
-CALL crearCurso(323,'Curso Civil 3',8,4,1,true);
-CALL crearCurso(324,'Curso Civil 4',12,4,1,true);
-CALL crearCurso(325,'Curso Civil 5',16,4,1,false);
-CALL crearCurso(0250,'Mecanica de Fluidos',0,5,1,true);
--- INGENIERIA ELECTRONICA
-CALL crearCurso(421,'Curso Electronica 1',0,4,4,true);
-CALL crearCurso(422,'Curso Electronica 2',4,4,4,true);
-CALL crearCurso(423,'Curso Electronica 3',8,4,4,false);
-CALL crearCurso(424,'Curso Electronica 4',12,4,4,true);
-CALL crearCurso(425,'Curso Electronica 5',16,4,4,true);
+    -- si la nota viene en decimales redondearla al entero mas cercano
+    SET notas = ROUND(notas);
 
--- HABILITAR CURSO
+    -- verifica si el estudiante ya tiene una nota ingresada
+    IF EXISTS (SELECT * FROM BD1PY2.NOTA WHERE carnet = carnets AND id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE())) AND nota IS NOT NULL) THEN
+        UPDATE BD1PY2.NOTA SET nota = notas WHERE carnet = carnets AND id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE()));
+        IF notas >= 61 THEN
+            UPDATE BD1PY2.ESTUDIANTE SET creditos = creditos + (SELECT creditos_otg FROM BD1PY2.CURSO WHERE cod_curso = cod_cursos) WHERE carnet = carnets;
+        END IF;
+        CALL msgE('Se ha actualizado la nota del estudiante.');
+        LEAVE proc_ingresarNota;
+    END IF;
 
--- -- AREA COMUN
-CALL habilitarCurso(0006,'1S','1',30,'A');
+    -- Si no hay conflictos, ingresa la nota
+    INSERT INTO BD1PY2.NOTA(carnet, id_ch, nota) VALUES(carnets, (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE())), notas);
+    
+    -- si la nota es mayor o igual a 61, el estudiante aprobo y se agregan los creditos otorgados al estudiante
+    IF notas >= 61 THEN
+        UPDATE BD1PY2.ESTUDIANTE SET creditos = creditos + (SELECT creditos_otg FROM BD1PY2.CURSO WHERE cod_curso = cod_cursos) WHERE carnet = carnets;
+    END IF;
 
--- INGENIERIA EN SISTEMAS
-CALL habilitarCurso(777,'1S','1',30,'B');
+    CALL msg('Nota ingresada exitosamente.');
 
-CALL habilitarCurso(424,'2S','8',102,'C');
+END$$
+DELIMITER ;
 
-CALL habilitarCurso(321,'2S','3',10,'F');
+-- procedimiento para generar acta
+
+DROP PROCEDURE IF EXISTS generarActa;
+
+DELIMITER $$
+CREATE PROCEDURE generarActa(
+    IN cod_cursos VARCHAR(10),
+    IN ciclos VARCHAR(10),
+    IN seccions VARCHAR(2)
+)
+proc_generarActa: BEGIN
+
+    DECLARE fechas DATE;
+    DECLARE horas TIME;
+    SET horas = CURTIME();
+    SET fechas = CURDATE();
+
+    IF cod_cursos IS NULL THEN
+        CALL msgE('El código de curso no puede ser nulo.');
+        LEAVE proc_generarActa;
+    ELSEIF ciclos IS NULL THEN
+        CALL msgE('El ciclo no puede ser nulo.');
+        LEAVE proc_generarActa;
+    ELSEIF seccions IS NULL THEN
+        CALL msgE('La sección no puede ser nula.');
+        LEAVE proc_generarActa;
+    END IF;
+
+    -- Verifica si el curso esta habilitado
+    IF NOT EXISTS (SELECT * FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions AND anio = YEAR(CURDATE())) THEN
+        CALL msgE('El curso no esta habilitado.');
+        LEAVE proc_generarActa;
+    END IF;
+
+    -- Verifica si el curso tiene asignaciones
+    IF NOT EXISTS (SELECT * FROM BD1PY2.ASIGNACION WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions)) THEN
+        CALL msgE('El curso no tiene asignaciones.');
+        LEAVE proc_generarActa;
+    END IF;
+
+    -- Verifica si el curso tiene notas ingresadas
+    IF NOT EXISTS (SELECT * FROM BD1PY2.NOTA WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions)) THEN
+        CALL msgE('El curso no tiene notas ingresadas.');
+        LEAVE proc_generarActa;
+    END IF;
+
+    -- Ingresar en tabla acta
+    INSERT INTO BD1PY2.ACTA(fecha, hora, id_ch) VALUES(fechas, horas, (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions));
+
+    -- Si no hay conflictos, genera el acta
+    SELECT carnet, nombre, apellido, nota FROM BD1PY2.NOTA NATURAL JOIN BD1PY2.ESTUDIANTE WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND seccion = seccions);
+
+END$$
+DELIMITER ;
 
 
-CALL agregarHorario(1,2,'08:00-10:00');
-
-CALL agregarHorario(3,3,'08:00-10:00');
-
-CALL agregarHorario(2,9,'08:00-10:00');
-
-CALL agregarHorario(9,2,'08:00-10:00');
-
-CALL agregarHorario(5,3,'08:00-10:00');
-
-CALL agregarHorario(1,3,'08:00-10:00');
 
 
+-- Procesamiento de datos:
 
-CALL habilitarCurso(770,'1S','1',1,'D');
+-- procedimiento para consultar pensum
+
+DROP PROCEDURE IF EXISTS consultarPensum;
+
+DELIMITER $$
+CREATE PROCEDURE consultarPensum(
+    IN id_carreras INT
+)
+proc_consultarPensum: BEGIN
+
+    IF id_carreras IS NULL THEN
+        CALL msgE('El id de carrera no puede ser nulo.');
+        LEAVE proc_consultarPensum;
+    END IF;
+
+    -- Verifica si el id de carrera existe
+    IF NOT EXISTS (SELECT * FROM BD1PY2.CARRERA WHERE id_carrera = id_carreras) THEN
+        CALL msgE('El id de carrera no existe.');
+        LEAVE proc_consultarPensum;
+    END IF;
+
+    -- Si no hay conflictos, consulta el pensum
+    SELECT cod_curso, nombre, creditos_nec, creditos_otg, obligatorio FROM BD1PY2.CURSO WHERE id_carrera = id_carreras;
+
+END$$
+DELIMITER ;
 
 
-CALL asignarCurso(0006,'1S','A',202000001);
+-- procedimiento para consultar estudiante
 
-CALL desasignarCurso(0006,'1S','A',202000001);
+DROP PROCEDURE IF EXISTS consultarEstudiante;
 
+DELIMITER $$
+CREATE PROCEDURE consultarEstudiante(
+    IN carnets VARCHAR(10)
+)
+proc_consultarEstudiante: BEGIN
+
+    IF carnets IS NULL THEN
+        CALL msgE('El carnet no puede ser nulo.');
+        LEAVE proc_consultarEstudiante;
+    END IF;
+
+    -- Verifica si el carnet existe
+    IF NOT EXISTS (SELECT * FROM BD1PY2.ESTUDIANTE WHERE carnet = carnets) THEN
+        CALL msgE('El carnet no existe.');
+        LEAVE proc_consultarEstudiante;
+    END IF;
+
+    -- Si no hay conflictos, consulta el estudiante
+    SELECT carnet as Carnet, CONCAT(nombre,' ', apellido) as 'Nombre Completo', DATE_FORMAT(fecha_nac, '%d-%m-%Y') as 'Fecha de Nacimiento', correo as Correo, telefono as Telefono, direccion as Direccion, dpi as 'Numero de DPI', (SELECT nombre FROM BD1PY2.CARRERA WHERE id_carrera = (SELECT id_carrera FROM BD1PY2.ESTUDIANTE WHERE carnet = carnets)) as 'Carrera',creditos as 'Creditos' FROM BD1PY2.ESTUDIANTE WHERE carnet = carnets;
+
+END$$
+DELIMITER ;
+
+-- procedimiento para consultar docente
+
+DROP PROCEDURE IF EXISTS consultarDocente;
+
+DELIMITER $$
+CREATE PROCEDURE consultarDocente(
+    IN siifs VARCHAR(10)
+)
+proc_consultarDocente: BEGIN
+
+    IF siifs IS NULL THEN
+        CALL msgE('El registro SIIF no puede ser nulo.');
+        LEAVE proc_consultarDocente;
+    END IF;
+
+    -- Verifica si el registro SIIF existe
+    IF NOT EXISTS (SELECT * FROM BD1PY2.DOCENTE WHERE siif = siifs) THEN
+        CALL msgE('El registro SIIF no existe.');
+        LEAVE proc_consultarDocente;
+    END IF;
+
+    -- Si no hay conflictos, consulta el docente
+    SELECT siif as 'Registro SIIF', CONCAT(nombre,' ', apellido) as 'Nombre Completo', DATE_FORMAT(fecha_nac, '%d-%m-%Y') as 'Fecha de Nacimiento', correo as Correo, telefono as Telefono, direccion as Direccion, dpi as 'Numero de DPI' FROM BD1PY2.DOCENTE WHERE siif = siifs;
+
+END$$
+DELIMITER ;
+
+
+-- procedimiento para consultar asignados
+
+DROP PROCEDURE IF EXISTS consultarAsignados;
+
+DELIMITER $$
+CREATE PROCEDURE consultarAsignados(
+    IN cod_cursos VARCHAR(10),
+    IN ciclos VARCHAR(10),
+    IN anio INT,
+    IN seccions VARCHAR(2)
+)
+proc_consultarAsignados: BEGIN
+
+    IF cod_cursos IS NULL THEN
+        CALL msgE('El código de curso no puede ser nulo.');
+        LEAVE proc_consultarAsignados;
+    ELSEIF ciclos IS NULL THEN
+        CALL msgE('El ciclo no puede ser nulo.');
+        LEAVE proc_consultarAsignados;
+    ELSEIF anio IS NULL THEN
+        CALL msgE('El año no puede ser nulo.');
+        LEAVE proc_consultarAsignados;
+    ELSEIF seccions IS NULL THEN
+        CALL msgE('La sección no puede ser nula.');
+        LEAVE proc_consultarAsignados;
+    END IF;
+
+    -- Verifica si el curso esta habilitado
+    IF NOT EXISTS (SELECT * FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND anio = anio AND seccion = seccions) THEN
+        CALL msgE('El curso no esta habilitado.');
+        LEAVE proc_consultarAsignados;
+    END IF;
+
+    -- Si no hay conflictos, consulta los asignados
+    SELECT carnet as Carnet, CONCAT(nombre,' ', apellido) as 'Nombre Completo', creditos as 'Creditos' FROM BD1PY2.ESTUDIANTE NATURAL JOIN BD1PY2.ASIGNACION WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND anio = anio AND seccion = seccions);
+
+END$$
+DELIMITER ;
+
+
+
+-- procedimiento para consultar aprobacion
+
+DROP PROCEDURE IF EXISTS consultarAprobacion;
+
+DELIMITER $$
+CREATE PROCEDURE consultarAprobacion(
+    IN cod_cursos VARCHAR(10),
+    IN ciclos VARCHAR(10),
+    IN anio INT,
+    IN seccions VARCHAR(2)
+)
+proc_consultarAprobacion: BEGIN
+
+    IF cod_cursos IS NULL THEN
+        CALL msgE('El código de curso no puede ser nulo.');
+        LEAVE proc_consultarAprobacion;
+    ELSEIF ciclos IS NULL THEN
+        CALL msgE('El ciclo no puede ser nulo.');
+        LEAVE proc_consultarAprobacion;
+    ELSEIF anio IS NULL THEN
+        CALL msgE('El año no puede ser nulo.');
+        LEAVE proc_consultarAprobacion;
+    ELSEIF seccions IS NULL THEN
+        CALL msgE('La sección no puede ser nula.');
+        LEAVE proc_consultarAprobacion;
+    END IF;
+
+    -- Verifica si el curso esta habilitado
+    IF NOT EXISTS (SELECT * FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND anio = anio AND seccion = seccions) THEN
+        CALL msgE('El curso no esta habilitado.');
+        LEAVE proc_consultarAprobacion;
+    END IF;
+
+    -- Si no hay conflictos, consulta la aprobacion
+    SELECT cod_cursos as 'Codigo de Curso', carnet as Carnet, CONCAT(nombre,' ', apellido) as 'Nombre Completo', IF(nota >= 61, 'APROBADO', 'DESAPROBADO') as 'Estado' FROM BD1PY2.NOTA NATURAL JOIN BD1PY2.ESTUDIANTE WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND anio = anio AND seccion = seccions);
+
+END$$
+DELIMITER ;
+
+-- procedimiento para consultar actas
+
+DROP PROCEDURE IF EXISTS consultarActas;
+
+DELIMITER $$
+CREATE PROCEDURE consultarActas(
+    IN cod_cursos VARCHAR(10)
+)
+proc_consultarActas: BEGIN
+
+    IF cod_cursos IS NULL THEN
+        CALL msgE('El código de curso no puede ser nulo.');
+        LEAVE proc_consultarActas;
+    END IF;
+
+    -- Verifica si el curso esta habilitado
+    IF NOT EXISTS (SELECT * FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos) THEN
+        CALL msgE('El curso no esta habilitado.');
+        LEAVE proc_consultarActas;
+    END IF;
+
+    -- Si no hay conflictos, consulta las actas
+    SELECT cod_curso as 'Codigo de Curso', seccion as Seccion, IF(ciclo = '1S', 'PRIMER SEMESTRE', IF(ciclo = '2S', 'SEGUNDO SEMESTRE', IF(ciclo = 'VJ', 'VACACIONES DE JUNIO', IF(ciclo = 'VD', 'VACACIONES DE DICIEMBRE', 'DESCONOCIDO')))) as Ciclo, anio as Anio, (SELECT COUNT(*) FROM BD1PY2.NOTA WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclo AND anio = anio AND seccion = seccion)) as 'Cantidad de Estudiantes', CONCAT(fecha, ' ', hora) as 'Fecha y Hora de Generado' FROM BD1PY2.ACTA NATURAL JOIN BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos;
+
+END$$
+DELIMITER ;
+
+-- procedimiento para consultar tasa de desasignacion
+
+DROP PROCEDURE IF EXISTS consultarDesasignacion;
+
+DELIMITER $$
+CREATE PROCEDURE consultarDesasignacion(
+    IN cod_cursos VARCHAR(10),
+    IN ciclos VARCHAR(10),
+    IN anio INT,
+    IN seccions VARCHAR(2)
+)
+
+proc_consultarDesasignacion: BEGIN
+
+    IF cod_cursos IS NULL THEN
+        CALL msgE('El código de curso no puede ser nulo.');
+        LEAVE proc_consultarDesasignacion;
+    ELSEIF ciclos IS NULL THEN
+        CALL msgE('El ciclo no puede ser nulo.');
+        LEAVE proc_consultarDesasignacion;
+    ELSEIF anio IS NULL THEN
+        CALL msgE('El año no puede ser nulo.');
+        LEAVE proc_consultarDesasignacion;
+    ELSEIF seccions IS NULL THEN
+        CALL msgE('La sección no puede ser nula.');
+        LEAVE proc_consultarDesasignacion;
+    END IF;
+
+    -- Verifica si el curso esta habilitado
+    IF NOT EXISTS (SELECT * FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND anio = anio AND seccion = seccions) THEN
+        CALL msgE('El curso no esta habilitado.');
+        LEAVE proc_consultarDesasignacion;
+    END IF;
+
+    -- Si no hay conflictos, consulta la desasignacion
+    SELECT cod_curso as 'Codigo de Curso', seccion as Seccion, IF(ciclo = '1S', 'PRIMER SEMESTRE', IF(ciclo = '2S', 'SEGUNDO SEMESTRE', IF(ciclo = 'VJ', 'VACACIONES DE JUNIO', IF(ciclo = 'VD', 'VACACIONES DE DICIEMBRE', 'DESCONOCIDO')))) as Ciclo, anio as Anio, (SELECT COUNT(*) FROM BD1PY2.ASIGNACION WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclo AND anio = anio AND seccion = seccion)) as 'Cantidad de Estudiantes', (SELECT COUNT(*) FROM BD1PY2.DESASIGNACION WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclo AND anio = anio AND seccion = seccion)) as 'Cantidad de Desasignados', CONCAT(ROUND((SELECT COUNT(*) FROM BD1PY2.DESASIGNACION WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclo AND anio = anio AND seccion = seccion)) / (SELECT COUNT(*) FROM BD1PY2.ASIGNACION WHERE id_ch = (SELECT id_ch FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclo AND anio = anio AND seccion = seccion)) * 100), '%') as 'Porcentaje de Desasignacion' FROM BD1PY2.CURSO_HABILITADO WHERE cod_curso = cod_cursos AND ciclo = ciclos AND anio = anio AND seccion = seccions;
+
+END$$
+DELIMITER ;
 
 
 
